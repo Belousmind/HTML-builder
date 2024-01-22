@@ -15,15 +15,15 @@ function makeCopy(dir) {
             if (err) 
               console.log(err); 
             else {
-                fs.mkdir(path.join(__dirname, 'files-copy'),
-                { recursive: true },
-                (err) => {
-                    if (err) {
-                        return console.error(err);
-                    }
-                    files.forEach(file => {
-                        fs.copyFile(path.join(__dirname, 'files', `${file.name}`), path.join(__dirname, 'files-copy', `${file.name}`), copyAlert); 
-                    }); 
+              fs.mkdir(path.join(__dirname, 'files-copy'),
+              { recursive: true },
+              (err) => {
+                if (err) {
+                    return console.error(err);
+                }
+                files.forEach(file => {
+                  fs.copyFile(path.join(__dirname, 'files', `${file.name}`), path.join(__dirname, 'files-copy', `${file.name}`), copyAlert); 
+                  }); 
                 });  
             } 
           }
