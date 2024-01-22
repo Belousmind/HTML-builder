@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('node:path');
 
-const html = fs.createWriteStream(path.join(__dirname, 'project-dist', 'index.html'));
 const css = fs.createWriteStream(path.join(__dirname, 'project-dist', 'style.css'));
 
 function pageBuilder() {
@@ -11,12 +10,13 @@ function pageBuilder() {
     if (err) {
         return console.error(err);
     }
-    stylesBuilder();
+    htmlTemplateCopy();
+    stylesBundler();
     makeCopy();
   });  
 }
 
-function stylesBuilder() {
+function stylesBundler() {
   fs.readdir(path.resolve(__dirname, 'styles'),
     { withFileTypes: true },
     (err, files) => { 
@@ -72,6 +72,10 @@ function makeCopy() {
       } 
     }
   )
+}
+
+function htmlTemplateCopy() {
+  fs.copyFile(path.join(__dirname, 'template.html'), path.join(__dirname, 'project-dist', 'index.html'), copyAlert);
 }
 
 pageBuilder()
