@@ -9,15 +9,20 @@ fs.readdir(path.resolve(__dirname, 'secret-folder'),
       else { 
         files.forEach(file => {
           if (file.isFile()) {
-            console.log(file);
+            fs.stat(path.resolve(__dirname, 'secret-folder', file.name), (err, stats) => {
+              if (err) {
+                console.error(err);
+              }
+              const fileNameAndType = file.name.split('.');
+              const fileSize = stats.size / 1000;
+              console.log(`${fileNameAndType[0]} - ${fileNameAndType[1]} - ${fileSize}kb`);
+            });
           }
         }) 
       } 
     }
 ) 
 
-// file.isFile(), file.size
-// example - txt - 128.369kb
 
 
 
