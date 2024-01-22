@@ -78,4 +78,40 @@ function htmlTemplateCopy() {
   fs.copyFile(path.join(__dirname, 'template.html'), path.join(__dirname, 'project-dist', 'index.html'), copyAlert);
 }
 
-pageBuilder()
+function htmlBundler() {
+  fs.readFile(path.join(__dirname, 'project-dist', 'index.html'), 
+  {encoding: 'utf8'},
+  (err, content) => {
+    if (err) 
+        console.log(err);
+    else {
+      let html = content;
+      // console.log(html)
+      fs.readdir(path.join(__dirname, 'components'),
+      { withFileTypes: true },
+      (err, files) => { 
+          if (err) 
+            console.log(err); 
+          else {
+            files.forEach(file => {
+              const moduleName = `{{${path.basename(`${file.name}`, '.html')}}}`;
+              // console.log(moduleName);
+              if (html.includes(moduleName)) {
+                fs.readFile(path.join(__dirname, 'components', `${file.name}`), 
+                {encoding: 'utf8'},
+                (err, content) => {
+                  console.log(file.name, html.includes(moduleName))
+                  html = html.replace(moduleName, content);
+                  fs.createWriteStream(path.join(__dirname, 'project-dist', 'index.html'), {encoding: 'utf8'}).write(html);
+                })
+              }
+            })
+          } 
+        }
+      )
+    }
+  })
+}
+// htmlTemplateCopy()
+htmlBundler()
+// pageBuilder()
