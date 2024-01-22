@@ -1,15 +1,21 @@
 const fs = require('fs');
-const { stdin, stdout } = require('node:process');
+const { stdin, stdout, exit } = require('node:process');
 const newFile = fs.createWriteStream('02-write-file/new-file.txt');
 
-stdout.write('Hey! Write something here: ')
+stdout.write('Hey! Write something here:\n')
+
+function endProg() {
+  stdout.write('Complete! All information is saved');
+  exit();
+}
 
 stdin.on('data', (chunk) => {
-  newFile.write(chunk);
+  chunk = chunk.toString().trim(); 
+  // console.log(typeof chunk)
   if (chunk === 'exit') {
-    stdout.write('Stream is end');
-    exit()
+    endProg();
   }
+  newFile.write(chunk);
 })
 
-
+process.on('SIGINT', endProg);
