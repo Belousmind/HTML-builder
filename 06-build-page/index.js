@@ -76,6 +76,7 @@ function makeCopy() {
 
 function htmlTemplateCopy() {
   fs.copyFile(path.join(__dirname, 'template.html'), path.join(__dirname, 'project-dist', 'index.html'), copyAlert);
+  htmlBundler()
 }
 
 function htmlBundler() {
@@ -100,7 +101,6 @@ function htmlBundler() {
                 fs.readFile(path.join(__dirname, 'components', `${file.name}`), 
                 {encoding: 'utf8'},
                 (err, content) => {
-                  console.log(file.name, html.includes(moduleName))
                   html = html.replace(moduleName, content);
                   fs.createWriteStream(path.join(__dirname, 'project-dist', 'index.html'), {encoding: 'utf8'}).write(html);
                 })
@@ -112,6 +112,5 @@ function htmlBundler() {
     }
   })
 }
-// htmlTemplateCopy()
-htmlBundler()
-// pageBuilder()
+
+pageBuilder();
